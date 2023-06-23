@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container text-center">
+        <div class="row">
+            <div class="col-8">
+                <h1>Tell Me A Story!</h1>
+                {% for story in stories %}
+                        <div class="alert alert-info" role="alert">
+                            <div class="container">
+                                <div class ="row">
+                                    <div class = "col-1">
+                                        {% if story.user.profile.profile_image %}
+                                        <img src="{{ story.user.profile.profile_image.url}}"
+                                             class ="" height=50 width=50>
+                                        {% else %}
+                                        <img src="{% static 'images/no_profile_pic.jpg' %}"
+                                             class="" height=50 width=50 alt="Profile Image">
+                                        {% endif %}
+                                    </div>
+                                        <div class = "col-10">
+                            <div class = "col-12">
+                                {{ story.body }}
+                                <small class="text-muted"></br>
+                                    {{ story.created_at }} by @{{ story.user.username }}
+                                </small>
+                            </div>
+                                        </div>
+                                </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+            </div>
+<div class="col-4">
+    {% if form %}
+    <form method=POST>
+        {% csrf_token %}
+        {{ form.as_p }}
+  <button type="submit" class="btn btn-secondary">Tell A Story</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
