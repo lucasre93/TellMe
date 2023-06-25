@@ -7,7 +7,7 @@ class StoryForm(forms.ModelForm):
     body = forms.CharField(required=True,
                            widget = forms.widgets.Textarea(
                                attrs={
-                                   "placeholder": "Tell me your Story!",
+                                   "placeholder": "Tell Me Your Story!",
                                    "class":"form-control",
                                }
                            ),
@@ -15,7 +15,7 @@ class StoryForm(forms.ModelForm):
                            )
     class Meta:
         model = Story
-        exclude = ("user",)
+        exclude = ("user","likes")
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(label="", max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Enter your email to register'}))

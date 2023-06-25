@@ -25,7 +25,20 @@
                             <div class = "col-12">
                                 {{ story.body }}
                                 <small class="text-muted"></br>
-                                    {{ story.created_at }} by @{{ story.user.username }}
+                                    {{ story.created_at }} by @{{ story.user.username }} -
+                                    {{ story.number_of_likes }} Likes
+                                    - {% if user in story.likes.all %}
+                                        <a href="{% url 'story_like' story.id %} ">
+                                            <i class="fa-solid fa-heart" style="color:red"></i>
+                                        </a>
+                                        {% else %}
+                                        <a href="{% url 'story_like' story.id %} ">
+                                            <i class="fa fa-heart-o" style="color:red"></i>
+                                        </a>
+                                        {% endif %}
+                                    <a href="{% url 'story_show' story.id %}">
+                                        <i class="fa-solid fa-share" style="color:grey"></i>
+                                    </a>
                                 </small>
                             </div>
                                         </div>
