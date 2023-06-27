@@ -13,5 +13,6 @@ urlpatterns = [
     path('update_user/', views.update_user, name='update_user'),
     path('story_like/<int:pk>', views.story_like, name='story_like'),
     path('story_show/<int:pk>', views.story_show, name='story_show'),
+    path('delete_story/<int:pk>', views.delete_story, name='delete'),
 
 ]

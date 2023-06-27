@@ -129,3 +129,15 @@ def story_show(request, pk):
     else:
         messages.success(request, "That Story Does Not Exist or Has Been Deleted")
         return redirect('home')
+
+def delete_story(request, pk):
+    if request.user.is_authenticated:
+        story = get_object_or_404(Story, id=pk)
+        #CHECK IF THE STORY BELONG TO THIS USER
+        if request.user.username == story.user.username:
+            story.delete()
+            messages.success(request, "Your Story Has Been Deleted")
+            return redirect(request.META.get("HTTP_REFERER"))
+    else:
+        messages.success(request, "Please LogIn To Continue")
+        return redirect('home')
