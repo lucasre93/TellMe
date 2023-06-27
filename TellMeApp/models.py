@@ -9,6 +9,12 @@ class Story(models.Model):
     )
     body = models.CharField(max_length=70)
     created_at = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name="story_like", blank=True)
+
+    #KEEP TRACK OF LIKES
+    def number_of_likes(self):
+        return self.likes.count()
+
 
     def __str__(self):
         return(
@@ -25,6 +31,11 @@ class Profile(models.Model):
         blank=True)
     date_modified = models.DateTimeField(User, auto_now=True)
     profile_image = models.ImageField(null=True, blank=True, upload_to="images/")
+    profile_bio = models.CharField(null=True, blank=True, max_length=100)
+    website_link = models.CharField(null=True, blank=True, max_length=50)
+    facebook_link = models.CharField(null=True, blank=True, max_length=50)
+    instagram_link = models.CharField(null=True, blank=True, max_length=50)
+    linkedin_link = models.CharField(null=True, blank=True, max_length=50)
 
     def __str__(self):
         return self.user.username

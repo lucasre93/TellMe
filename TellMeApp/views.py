@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Profile, Story
 from django.contrib import messages
 from .forms import StoryForm, SignUpForm, ProfilePicForm
@@ -108,4 +108,36 @@ def update_user(request):
         return render(request, "update_user.html", {'user_form': user_form, 'profile_form':profile_form})
     else:
         messages.success(request, "You Must Be Logged In To View This Page")
+        return redirect('home')
+
+def story_like(request, pk):
+    if request.user.is_authenticated:
+        story = get_object_or_404(Story, id=pk)
+        if story.likes.filter(id=request.user.id):
+            story.likes.remove(request.user)
+        else:
+            story.likes.add(request.user)
+        return redirect(request.META.get("HTTP_REFERER"))
+    else:
+        messages.success(request, "You Must Be Logged In To View This Page")
+        return redirect('home')
+
+def story_show(request, pk):
+    story = get_object_or_404(Story, id=pk)
+    if story:
+        return render(request, "story_show.html", {'story': story})
+    else:
+        messages.success(request, "That Story Does Not Exist or Has Been Deleted")
+        return redirect('home')
+
+def delete_story(request, pk):
+    if request.user.is_authenticated:
+        story = get_object_or_404(Story, id=pk)
+        #CHECK IF THE STORY BELONG TO THIS USER
+        if request.user.username == story.user.username:
+            story.delete()
+            messages.success(request, "Your Story Has Been Deleted")
+            return redirect(request.META.get("HTTP_REFERER"))
+    else:
+        messages.success(request, "Please LogIn To Continue")
         return redirect('home')
